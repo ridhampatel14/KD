@@ -1,7 +1,8 @@
-const { data } = require("../config/connect");
+const { getDataCollection } = require("../config/connect");
 
 async function getData() {
   try {
+    const data = getDataCollection();    
     return await data.find().toArray();
   } catch (error) {
     throw new Error("Error fetching data: " + error.message);

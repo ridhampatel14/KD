@@ -1,11 +1,22 @@
-const express = require("express");
+// const express = require("express");
+// const dataRoutes = require("./dataRoute");
+
+// const router = express.Router();
+
+// router.use("/", dataRoutes);
+// router.use("*", (req, res) => {
+//   res.status(404).json({ error: "Not Found" });
+// });
+
+// module.exports = router;
 const dataRoutes = require("./dataRoute");
 
-const router = express.Router();
+const constructorMethod = (app) => {
+  app.use("/", dataRoutes);
 
-router.use("/", dataRoutes);
-router.use("*", (req, res) => {
-  res.status(404).json({ error: "Not Found" });
-});
+  app.use("*", (req, res) => {
+    res.status(404).json({ error: "Not Found" });
+  });
+};
 
-module.exports = router;
+module.exports = constructorMethod;

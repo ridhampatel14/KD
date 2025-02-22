@@ -1,10 +1,16 @@
-const { MongoClient } = require("mongodb");
+const { MongoClient,ServerApiVersion} = require("mongodb");
 require("dotenv").config();
 
 //const uri = process.env.MONGO_URI;
-const uri = "mongodb+srv://<rajkoladiya>:<rajkoladiya>@kd.mkdw3.mongodb.net/KD?retryWrites=true&w=majority&appName=KD";
+const uri = process.env.MONGO_URI;
 
-const client = new MongoClient(uri);
+const client = new MongoClient(uri, {
+  serverApi: {
+    version: ServerApiVersion.v1,
+    strict: true,
+    deprecationErrors: true,
+  }
+});
 
 let db;
 let data;
@@ -16,11 +22,16 @@ async function connectDB() {
 
     db = client.db("KD"); 
     data = db.collection("Data"); 
+
   } catch (error) {
     console.error("Error connecting to MongoDB:", error);
     process.exit(1);
   }
 }
 
-// Export users collection directly
-module.exports = { connectDB, data };
+const getDataCollection = () => {
+  if (!data) throw new Error("Database not initialized yet");
+  return data;
+};
+
+module.exports = { connectDB, getDataCollection };
